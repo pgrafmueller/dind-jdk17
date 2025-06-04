@@ -2,11 +2,13 @@ FROM cruizba/ubuntu-dind
 
 RUN apt -y update
 RUN DEBIAN_FRONTEND=noninteractive apt install -y software-properties-common
+RUN add-apt-repository ppa:xtradeb/apps
+RUN apt -y update
+RUN DEBIAN_FRONTEND=noninteractive apt install -y chromium
 RUN DEBIAN_FRONTEND=noninteractive apt install -y git
 RUN DEBIAN_FRONTEND=noninteractive apt install -y openjdk-17-jdk
 RUN DEBIAN_FRONTEND=noninteractive apt install -y coreutils
 RUN DEBIAN_FRONTEND=noninteractive apt install -y jq
-RUN DEBIAN_FRONTEND=noninteractive apt install -y chromium-browser 
 RUN DEBIAN_FRONTEND=noninteractive apt install -y build-essential
 RUN curl -OL https://golang.org/dl/go1.20.4.linux-amd64.tar.gz
 RUN tar -C /usr/local -xvf go1.20.4.linux-amd64.tar.gz
@@ -18,7 +20,7 @@ RUN helm plugin install https://github.com/chartmuseum/helm-push
 RUN curl -s https://raw.githubusercontent.com/rancher/k3d/main/install.sh | bash
 RUN curl -LO "https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/amd64/kubectl"
 RUN chmod +x kubectl && mkdir -p ~/.local/bin && mv ./kubectl ~/.local/bin/kubectl
-ENV CHROME_BIN=/usr/bin/chromium-browser
+ENV CHROME_BIN=/usr/bin/chromium
 ENV PATH=$PATH:/usr/local/go/bin
 ENV PATH=$PATH:~/.local/bin
 COPY docker-utils.sh /opt/
